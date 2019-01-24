@@ -6,7 +6,7 @@ phases:
   build:
     commands:
     - yum update -y
-    - yum install -y gcc gcc-c++ python-pip libcurl-devel wget unzip diffutils file
+    - yum install -y gcc gcc-c++ python27-pip libcurl-devel wget unzip diffutils file
     - yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
     - yum install -y netcdf-devel hdf5-devel
     - wget http://download.osgeo.org/gdal/2.4.0/gdal240.zip
@@ -18,7 +18,6 @@ phases:
     - cd gdal-2.4.0 && ./configure >> ../src/configure.txt
     - cd gdal-2.4.0 && make -j $(nproc)
     - cd gdal-2.4.0 && make install
-    - pip install numpy==1.15.4 gdal==2.4.0 -t src/python
     - cp /usr/local/lib/libgdal.so.20 src/lib/
     - cp /usr/lib64/libnetcdf.so.6 src/lib/
     - cp /usr/lib64/libhdf5.so.6 src/lib/
@@ -26,6 +25,7 @@ phases:
     - cp /usr/lib64/libcurl.so.4 src/lib/
     - strip src/lib/*
     - cp /usr/local/share/gdal/* src/lib/data/
+    - pip install -r requirements.txt -t src/python
 artifacts:
   type: zip
   base-directory: src
