@@ -1,0 +1,33 @@
+# This build script is designed to run in AWS CodeBuild using the amazonlinux:2017.03.1.20170812 image from dockerhub
+
+version: 0.1
+
+phases:
+  build:
+    commands:
+    - yum update -y
+    - yum install -y gcc gcc-c++ python-pip libcurl-devel
+    - yum-config-manager --enable epel
+    - yum install -y netcdf-devel hdf5-devel
+    - wget http://download.osgeo.org/gdal/2.4.0/gdal240.zip
+    - unzip gdal240.zip
+    - mkdir src
+    - mkdir src/python
+    - mkdir src/lib
+    - mkdir src/lib/data
+    - cd gdal-2.4.0 && ./configure >> ../src/configure.txt
+    - cd gdal-2.4.0 && make -j $(nproc)
+    - cd gdal-2.4.0 && make install
+    - pip install numpy==1.15.4 gdal==2.4.0 -t src/python
+    - cp /usr/local/lib/libgdal.so.20 src/lib/
+    - cp /usr/lib64/libnetcdf.so.6 src/lib/
+    - cp /usr/lib64/libhdf5.so.6 src/lib/
+    - cp /usr/lib64/libhdf5_hl.so.6 src/lib/
+    - cp /usr/lib64/libcurl.so.4 src/lib/
+    - strip src/lib/*
+    - cp /usr/local/share/gdal/* src/lib/data/
+artifacts:
+  type: zip
+  base-directory: src
+  files:
+  - "*"
