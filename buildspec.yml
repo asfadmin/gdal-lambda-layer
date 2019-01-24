@@ -6,7 +6,7 @@ phases:
   build:
     commands:
     - yum update -y
-    - yum install -y gcc gcc-c++ python-pip libcurl-devel
+    - yum install -y gcc gcc-c++ python-pip libcurl-devel wget unzip diffutils file
     - yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
     - yum install -y netcdf-devel hdf5-devel
     - wget http://download.osgeo.org/gdal/2.4.0/gdal240.zip
