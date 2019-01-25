@@ -5,6 +5,7 @@
 # Build the Layer
 
    `aws cloudformation deploy --stack-name gdal-layer --template-file cloudformation.yaml --capabilities CAPABILITY_NAMED_IAM`
+
    `aws codebuild start-build --project-name gdal-layer`
 
 # Use the Layer
@@ -18,5 +19,7 @@
 # Additional Resources
 
    [Geospatial Data Abstraction Library](https://www.gdal.org/)
+
    [GDAL on PyPI](https://pypi.org/project/GDAL/)
+
    [AWS Lambda Layers](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html)
