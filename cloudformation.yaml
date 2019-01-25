@@ -82,7 +82,7 @@ Resources:
               - cd gdal-layer
               - zip -r gdal-layer.zip *
               - pip install awscli==1.16.94
-              - aws lambda publish-layer-version --layer-name $LAYER_NAME --description $LAYER_DESCRIPTION --compatible-runtimes python2.7 --license-info MIT --zip-file fileb://gdal-layer.zip
+              - aws lambda publish-layer-version --layer-name $LAYER_NAME --description "$LAYER_DESCRIPTION" --compatible-runtimes python2.7 --license-info MIT --zip-file fileb://gdal-layer.zip
       Artifacts:
         Type: NO_ARTIFACTS
       LogsConfig:
