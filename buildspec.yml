@@ -18,10 +18,12 @@ phases:
     - cd gdal-2.4.0 && ./configure >> ../src/configure.txt
     - cd gdal-2.4.0 && make -j $(nproc)
     - cd gdal-2.4.0 && make install
+    - ls /usr/lib64/
+    - ls /usr/local/lib/
     - cp /usr/local/lib/libgdal.so.20 src/lib/
-    - cp /usr/lib64/libnetcdf.so.6 src/lib/
-    - cp /usr/lib64/libhdf5.so.6 src/lib/
-    - cp /usr/lib64/libhdf5_hl.so.6 src/lib/
+    - cp /usr/lib64/libnetcdf.so.7 src/lib/
+    - cp /usr/lib64/libhdf5.so.8 src/lib/
+    - cp /usr/lib64/libhdf5_hl.so.8 src/lib/
     - cp /usr/lib64/libcurl.so.4 src/lib/
     - strip src/lib/*
     - cp /usr/local/share/gdal/* src/lib/data/
