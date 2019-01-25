@@ -13,7 +13,7 @@
    1. Create a new lambda function with the python 2.7 runtime
    1. Attach the layer to your function
    1. Set environment variable `GDAL_DATA=/opt/lib/data`
-   1. Add `from osgeo import lambda` to your function code
+   1. Add `from osgeo import gdal` to your function code
    1. Enjoy!
 
 # Additional Resources
