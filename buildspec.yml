@@ -11,25 +11,25 @@ phases:
     - yum install -y netcdf-devel hdf5-devel
     - wget --no-verbose http://download.osgeo.org/gdal/2.4.0/gdal240.zip
     - unzip gdal240.zip
-    - mkdir src
-    - mkdir src/python
-    - mkdir src/lib
-    - mkdir src/lib/data
-    - cd gdal-2.4.0 && ./configure >> ../src/configure.txt
+    - mkdir gdal-layer
+    - mkdir gdal-layer/python
+    - mkdir gdal-layer/lib
+    - mkdir gdal-layer/lib/data
+    - cd gdal-2.4.0 && ./configure >> ../gdal-layer/configure.txt
     - cd gdal-2.4.0 && make -j $(nproc)
     - cd gdal-2.4.0 && make install
     - ls /usr/lib64/
     - ls /usr/local/lib/
-    - cp /usr/local/lib/libgdal.so.20 src/lib/
-    - cp /usr/lib64/libnetcdf.so.7 src/lib/
-    - cp /usr/lib64/libhdf5.so.8 src/lib/
-    - cp /usr/lib64/libhdf5_hl.so.8 src/lib/
-    - cp /usr/lib64/libcurl.so.4 src/lib/
-    - strip src/lib/*.so*
-    - cp /usr/local/share/gdal/* src/lib/data/
-    - pip install -r requirements.txt -t src/python
+    - cp /usr/local/lib/libgdal.so.20 gdal-layer/lib/
+    - cp /usr/lib64/libnetcdf.so.7 gdal-layer/lib/
+    - cp /usr/lib64/libhdf5.so.8 gdal-layer/lib/
+    - cp /usr/lib64/libhdf5_hl.so.8 gdal-layer/lib/
+    - cp /usr/lib64/libcurl.so.4 gdal-layer/lib/
+    - strip gdal-layer/lib/*.so*
+    - cp /usr/local/share/gdal/* gdal-layer/lib/data/
+    - pip install -r requirements.txt -t gdal-layer/python
 artifacts:
   type: zip
-  base-directory: src
+  base-directory: gdal-layer
   files:
-  - "*"
+  - "**/*"
