@@ -25,7 +25,7 @@ phases:
     - cp /usr/lib64/libhdf5.so.8 src/lib/
     - cp /usr/lib64/libhdf5_hl.so.8 src/lib/
     - cp /usr/lib64/libcurl.so.4 src/lib/
-    - strip src/lib/*
+    - strip src/lib/*.so*
     - cp /usr/local/share/gdal/* src/lib/data/
     - pip install -r requirements.txt -t src/python
 artifacts:
