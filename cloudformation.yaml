@@ -57,7 +57,7 @@ Resources:
               - yum update -y
               - yum install -y gcc gcc-c++ python27-pip python27-devel libcurl-devel wget unzip diffutils file zip
               - yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-              - yum install -y netcdf-devel hdf5-devel
+              - yum install -y netcdf-devel hdf5-devel proj-devel
               - wget --no-verbose http://download.osgeo.org/gdal/2.4.0/gdal240.zip
               - unzip gdal240.zip
               - mkdir gdal-layer
@@ -65,7 +65,7 @@ Resources:
               - mkdir gdal-layer/lib
               - mkdir gdal-layer/lib/data
               - cd gdal-2.4.0
-              - ./configure >> ../gdal-layer/configure.txt
+              - ./configure --with-proj >> ../gdal-layer/configure.txt
               - make -j $(nproc)
               - make install
               - cd ..
@@ -76,6 +76,7 @@ Resources:
               - cp /usr/lib64/libcurl.so.4 gdal-layer/lib/
               - cp /usr/lib64/libsz.so.2 gdal-layer/lib/
               - cp /usr/lib64/libaec.so.0 gdal-layer/lib/
+              - cp /usr/lib64/libproj.so.0 gdal-layer/lib/
               - strip gdal-layer/lib/*.so*
               - cp /usr/local/share/gdal/* gdal-layer/lib/data/
               - pip install numpy==1.16.0 gdal==2.4.0 -t gdal-layer/python
