@@ -54,32 +54,37 @@ Resources:
           phases:
             build:
               commands:
-              - yum update -y
-              - yum install -y gcc gcc-c++ python27-pip python27-devel libcurl-devel wget unzip diffutils file zip
+              - yum install -y gcc gcc-c++ python27-pip python27-devel diffutils file git automake libtool which sqlite-devel zip
               - yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-              - yum install -y netcdf-devel hdf5-devel proj-devel
-              - wget --no-verbose http://download.osgeo.org/gdal/2.4.0/gdal240.zip
-              - unzip gdal240.zip
+              - yum install -y netcdf-devel hdf5-devel
+              - git clone https://github.com/OSGeo/proj.4.git
+              - cd proj.4
+              - ./autogen.sh
+              - ./configure
+              - make -j $(nproc)
+              - make install
+              - cd ..
               - mkdir gdal-layer
               - mkdir gdal-layer/python
               - mkdir gdal-layer/lib
               - mkdir gdal-layer/lib/data
-              - cd gdal-2.4.0
-              - ./configure --with-proj >> ../gdal-layer/configure.txt
+              - git clone https://github.com/OSGeo/gdal.git
+              - cd gdal/gdal
+              - ./configure --with-proj --with-python --without-curl > ../../gdal-layer/configure.txt
               - make -j $(nproc)
+              - export INSTALL_LAYOUT=amzn
               - make install
-              - cd ..
+              - cd ../..
               - cp /usr/local/lib/libgdal.so.20 gdal-layer/lib/
+              - cp /usr/local/lib/libproj.so.15 gdal-layer/lib/
               - cp /usr/lib64/libnetcdf.so.7 gdal-layer/lib/
               - cp /usr/lib64/libhdf5.so.8 gdal-layer/lib/
               - cp /usr/lib64/libhdf5_hl.so.8 gdal-layer/lib/
-              - cp /usr/lib64/libcurl.so.4 gdal-layer/lib/
               - cp /usr/lib64/libsz.so.2 gdal-layer/lib/
               - cp /usr/lib64/libaec.so.0 gdal-layer/lib/
-              - cp /usr/lib64/libproj.so.0 gdal-layer/lib/
               - strip gdal-layer/lib/*.so*
               - cp /usr/local/share/gdal/* gdal-layer/lib/data/
-              - pip install numpy==1.16.0 gdal==2.4.0 -t gdal-layer/python
+              - cp -R /usr/local/lib64/python2.7/dist-packages/* /gdal-layer/python/
               - cd gdal-layer
               - zip -r gdal-layer.zip *
               - pip install awscli==1.16.94
