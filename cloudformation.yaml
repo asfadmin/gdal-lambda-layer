@@ -70,7 +70,7 @@ Resources:
               - mkdir gdal-layer/lib/data
               - git clone https://github.com/OSGeo/gdal.git
               - cd gdal/gdal
-              - ./configure --with-proj --with-python --without-curl > ../../gdal-layer/configure.txt
+              - ./configure --with-proj --with-python --without-curl --datarootdir=/gdal-layer/lib/data > ../../gdal-layer/configure.txt
               - make -j $(nproc)
               - export INSTALL_LAYOUT=amzn
               - make install
@@ -83,7 +83,6 @@ Resources:
               - cp /usr/lib64/libsz.so.2 gdal-layer/lib/
               - cp /usr/lib64/libaec.so.0 gdal-layer/lib/
               - strip gdal-layer/lib/*.so*
-              - cp /usr/local/share/gdal/* gdal-layer/lib/data/
               - cp -R /usr/local/lib64/python2.7/dist-packages/* /gdal-layer/python/
               - cd gdal-layer
               - zip -r gdal-layer.zip *
