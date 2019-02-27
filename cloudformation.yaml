@@ -59,6 +59,7 @@ Resources:
               - yum install -y netcdf-devel hdf5-devel
               - git clone https://github.com/OSGeo/proj.4.git
               - cd proj.4
+              - git checkout d3276a07b8a48e600332419d12886c34527d3162
               - ./autogen.sh
               - ./configure
               - make -j $(nproc)
@@ -70,6 +71,7 @@ Resources:
               - mkdir gdal-layer/lib/data
               - git clone https://github.com/OSGeo/gdal.git
               - cd gdal/gdal
+              - git checkout 9be22a5160ee283b72ead1fd39023fcb943ce198
               - ./configure --with-proj --with-python --without-curl --datarootdir=/gdal-layer/lib/data > ../../gdal-layer/configure.txt
               - make -j $(nproc)
               - export INSTALL_LAYOUT=amzn
@@ -83,7 +85,7 @@ Resources:
               - cp /usr/lib64/libsz.so.2 gdal-layer/lib/
               - cp /usr/lib64/libaec.so.0 gdal-layer/lib/
               - strip gdal-layer/lib/*.so*
-              - cp -R /usr/local/lib64/python2.7/dist-packages/* /gdal-layer/python/
+              - cp -R /usr/local/lib64/python2.7/dist-packages/* gdal-layer/python/
               - cd gdal-layer
               - zip -r gdal-layer.zip *
               - pip install awscli==1.16.94
