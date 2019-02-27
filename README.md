@@ -1,6 +1,6 @@
 # About
 
-   This project builds and deploys an AWS Lambda layer that supports GDAL 2.4.0 for Python 2.7.
+   This project builds and deploys an AWS Lambda layer that supports GDAL 2.5.0dev for Python 2.7.
 
 # Build the Layer
 
