@@ -54,41 +54,47 @@ Resources:
           phases:
             build:
               commands:
-              - yum install -y gcc gcc-c++ python27-pip python27-devel diffutils file git automake libtool which sqlite-devel zip
-              - yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-              - yum install -y netcdf-devel hdf5-devel
-              - mkdir /opt/python
-              - mkdir /opt/lib
-              - mkdir /opt/lib/data
-              - git clone https://github.com/OSGeo/proj.4.git
-              - cd proj.4
-              - git checkout d3276a07b8a48e600332419d12886c34527d3162
-              - ./autogen.sh
-              - ./configure --datarootdir=/opt/lib/data
-              - make -j $(nproc)
-              - make install
-              - cd ..
-              - git clone https://github.com/OSGeo/gdal.git
-              - cd gdal/gdal
-              - git checkout 9be22a5160ee283b72ead1fd39023fcb943ce198
-              - ./configure --with-proj --with-python --without-curl --datarootdir=/opt/lib/data > /opt/configure.txt
-              - make -j $(nproc)
-              - export INSTALL_LAYOUT=amzn
-              - make install
-              - cd ../..
-              - cp /usr/local/lib/libgdal.so.20 /opt/lib/
-              - cp /usr/local/lib/libproj.so.15 /opt/lib/
-              - cp /usr/lib64/libnetcdf.so.7 /opt/lib/
-              - cp /usr/lib64/libhdf5.so.8 /opt/lib/
-              - cp /usr/lib64/libhdf5_hl.so.8 /opt/lib/
-              - cp /usr/lib64/libsz.so.2 /opt/lib/
-              - cp /usr/lib64/libaec.so.0 /opt/lib/
-              - strip /opt/lib/*.so*
-              - cp -R /usr/local/lib64/python2.7/dist-packages/* /opt/python/
-              - cd /opt
-              - zip -r gdal-layer.zip *
-              - pip install awscli==1.16.94
-              - aws lambda publish-layer-version --layer-name $LAYER_NAME --description "$LAYER_DESCRIPTION" --compatible-runtimes python2.7 --license-info MIT --zip-file fileb://gdal-layer.zip
+      - yum install -y gcc gcc-c++ python27-pip python27-devel diffutils file git automake libtool which sqlite-devel zip curl-devel python-devel
+			- yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+			- yum install -y hdf5-devel
+			- mkdir /opt/python
+			- mkdir /opt/lib
+			- mkdir /opt/lib/data
+			- git clone https://github.com/Unidata/netcdf-c.git
+			- cd netcdf-c
+			- git checkout v4.6.2
+			- ./configure
+			- make -j $(nproc)
+			- make install
+			- cd ../..
+			- git clone https://github.com/OSGeo/proj.4.git
+			- cd proj.4
+			- ./autogen.sh
+			- ./configure --datarootdir=/opt/lib/data
+			- make -j $(nproc)
+			- make install
+			- cd ..
+			- git clone https://github.com/idixon/gdal.git
+			- cd gdal/gdal
+			- ./configure --with-proj --with-python --datarootdir=/opt/lib/data --with-netcdf=/usr/local
+			- make -j $(nproc)
+			- export INSTALL_LAYOUT=amzn
+			- make install
+			- cd ../..
+			- cp /usr/local/lib/libgdal.so.* /opt/lib/
+			- cp /usr/local/lib/libproj.so.* /opt/lib/
+			- cp /usr/local/lib/libnetcdf.so.* /opt/lib/
+			- cp /usr/lib64/libhdf5.so.* /opt/lib/
+			- cp /usr/lib64/libhdf5_hl.so.* /opt/lib/
+			- cp /usr/lib64/libsz.so.* /opt/lib/
+			- cp /usr/lib64/libaec.so.* /opt/lib/
+			- strip /opt/lib/*.so*
+			- cp -R /usr/local/lib64/python2.7/dist-packages/* /opt/python/
+			- cd /opt
+			- zip -r gdal-layer.zip *
+			- pip install awscli==1.16.94
+      - aws lambda publish-layer-version --layer-name $LAYER_NAME --description "$LAYER_DESCRIPTION" --compatible-runtimes python2.7 --license-info MIT --zip-file fileb://gdal-layer.zip
+          
       Artifacts:
         Type: NO_ARTIFACTS
       LogsConfig:
