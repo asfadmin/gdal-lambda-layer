@@ -130,4 +130,4 @@ Resources:
         CloudWatchLogs:
           Status: ENABLED
           GroupName: !Ref LogGroup
-      TimeoutInMinutes: 20
+      TimeoutInMinutes: 30
