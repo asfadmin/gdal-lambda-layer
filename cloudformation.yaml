@@ -41,7 +41,7 @@ Resources:
       Environment:
         ComputeType: BUILD_GENERAL1_LARGE
         Type: LINUX_CONTAINER
-        Image: amazonlinux:2017.03.1.20170812
+        Image: amazonlinux:2
       ServiceRole: !Ref Role
       Source:
         Type: NO_SOURCE
