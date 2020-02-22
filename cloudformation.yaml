@@ -54,41 +54,67 @@ Resources:
           phases:
             build:
               commands:
-              - yum install -y gcc gcc-c++ python27-pip python27-devel diffutils file git automake libtool which sqlite-devel zip
+              - yum install -y gcc gcc-c++ make libtool file gzip zip wget openssl-devel libffi-devel
               - yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
               - yum install -y netcdf-devel hdf5-devel
               - mkdir /opt/python
               - mkdir /opt/lib
               - mkdir /opt/lib/data
-              - git clone https://github.com/OSGeo/proj.4.git
-              - cd proj.4
-              - git checkout d3276a07b8a48e600332419d12886c34527d3162
-              - ./autogen.sh
+              - export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+              - wget https://www.python.org/ftp/python/3.8.1/Python-3.8.1.tgz
+              - tar xzf Python-3.8.1.tgz
+              - cd Python-3.8.1
+              - ./configure
+              - make -j $(nproc)
+              - make install
+              - cd ..
+              - wget https://www.sqlite.org/snapshot/sqlite-snapshot-202002181949.tar.gz
+              - tar xvzf sqlite-snapshot-202002181949.tar.gz
+              - cd sqlite-snapshot-202002181949
+              - ./configure
+              - make -j $(nproc)
+              - make install
+              - cd ..
+              - wget https://github.com/OSGeo/PROJ/releases/download/6.3.1/proj-6.3.1.tar.gz
+              - tar xvzf proj-6.3.1.tar.gz
+              - cd proj-6.3.1
               - ./configure --datarootdir=/opt/lib/data
               - make -j $(nproc)
               - make install
               - cd ..
-              - git clone https://github.com/OSGeo/gdal.git
-              - cd gdal/gdal
-              - git checkout 9be22a5160ee283b72ead1fd39023fcb943ce198
-              - ./configure --with-proj --with-python --without-curl --datarootdir=/opt/lib/data > /opt/configure.txt
+              - wget https://github.com/OSGeo/gdal/releases/download/v3.0.4/gdal-3.0.4.tar.gz
+              - tar xvzf gdal-3.0.4.tar.gz
+              - cd gdal-3.0.4
+              - ./configure --with-proj --datarootdir=/opt/lib/data > /opt/configure.txt
               - make -j $(nproc)
-              - export INSTALL_LAYOUT=amzn
               - make install
               - cd ../..
-              - cp /usr/local/lib/libgdal.so.20 /opt/lib/
+              - cp /usr/local/lib/libgdal.so.26 /opt/lib/
               - cp /usr/local/lib/libproj.so.15 /opt/lib/
+              - cp /usr/local/lib/libsqlite3.so.0 /opt/lib/
               - cp /usr/lib64/libnetcdf.so.7 /opt/lib/
               - cp /usr/lib64/libhdf5.so.8 /opt/lib/
               - cp /usr/lib64/libhdf5_hl.so.8 /opt/lib/
               - cp /usr/lib64/libsz.so.2 /opt/lib/
               - cp /usr/lib64/libaec.so.0 /opt/lib/
+              - cp /usr/lib64/libcurl.so.4 /opt/lib/
+              - cp /usr/lib64/libjpeg.so.62 /opt/lib/
+              - cp /usr/lib64/libnghttp2.so.14 /opt/lib/
+              - cp /usr/lib64/libidn2.so.0 /opt/lib/
+              - cp /usr/lib64/libssh2.so.1 /opt/lib/
+              - cp /usr/lib64/libldap-2.4.so.2 /opt/lib/
+              - cp /usr/lib64/liblber-2.4.so.2 /opt/lib/
+              - cp /usr/lib64/libunistring.so.0 /opt/lib/
+              - cp /usr/lib64/libsasl2.so.3 /opt/lib/
+              - cp /usr/lib64/libssl3.so /opt/lib/
+              - cp /usr/lib64/libsmime3.so /opt/lib/
+              - cp /usr/lib64/libnss3.so /opt/lib/
               - strip /opt/lib/*.so*
-              - cp -R /usr/local/lib64/python2.7/dist-packages/* /opt/python/
+              - pip3.8 install -t /opt/python/ gdal==3.0.4
               - cd /opt
               - zip -r gdal-layer.zip *
-              - pip install awscli==1.16.94
-              - aws lambda publish-layer-version --layer-name $LAYER_NAME --description "$LAYER_DESCRIPTION" --compatible-runtimes python2.7 --license-info MIT --zip-file fileb://gdal-layer.zip
+              - pip3.8 install awscli
+              - aws lambda publish-layer-version --layer-name $LAYER_NAME --description "$LAYER_DESCRIPTION" --compatible-runtimes python3.8 --license-info MIT --zip-file fileb://gdal-layer.zip
       Artifacts:
         Type: NO_ARTIFACTS
       LogsConfig:
