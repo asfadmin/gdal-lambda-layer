@@ -1,6 +1,6 @@
 # About
 
-   This project builds and deploys an AWS Lambda layer that supports GDAL 2.5.0dev for Python 2.7.
+   This project builds and deploys an AWS Lambda layer that supports GDAL 3.0.4 for Python 3.8.1.
 
 # Build the Layer
 
@@ -10,7 +10,7 @@
 
 # Use the Layer
 
-   1. Create a new lambda function with the python 2.7 runtime
+   1. Create a new lambda function with the python 3.8 runtime
    1. Attach the layer to your function
    1. Set environment variable `GDAL_DATA=/opt/lib/data`
    1. Add `from osgeo import gdal` to your function code
