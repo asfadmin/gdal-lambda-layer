@@ -50,7 +50,7 @@ Resources:
           env:
             variables:
               LAYER_NAME: ${AWS::StackName}
-              LAYER_DESCRIPTION: gdal 2.5.0dev for python2.7 with netcdf/hdf5 support
+              LAYER_DESCRIPTION: gdal 3.0.4 for python3.8 with netcdf/hdf5 support
           phases:
             build:
               commands:
